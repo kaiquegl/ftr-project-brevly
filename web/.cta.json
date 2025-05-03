@@ -1,0 +1,18 @@
+{
+  "framework": "react",
+  "typescript": true,
+  "projectName": "brevly-web",
+  "mode": "file-router",
+  "tailwind": true,
+  "packageManager": "pnpm",
+  "toolchain": "biome",
+  "variableValues": {},
+  "git": true,
+  "version": 1,
+  "existingAddOns": [
+    "form",
+    "netlify",
+    "t3env",
+    "tanstack-query"
+  ]
+}
