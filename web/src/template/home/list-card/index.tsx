@@ -1,14 +1,15 @@
-import { useState } from "react";
-
 import DownloadIcon from "@/components/icons/download";
-import LinkIcon from "@/components/icons/link";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
+import getLinkList from "@/services/links/get-list";
+import EmptyList from "./list/empty";
+import ListLinkItem from "./list/item";
+import LoadingList from "./list/loading";
 
 export default function ListCard() {
-  const [links, setLinks] = useState([]);
+  const { data, isLoading, isFetching } = getLinkList();
 
   return (
     <Card className="flex flex-col gap-4 lg:gap-5">
@@ -23,17 +24,17 @@ export default function ListCard() {
         </Button>
       </div>
 
-      <div className={cn("border-t border-secondary", !links?.length && "pt-8 pb-6")}>
-        {!links.length ? (
-          <div className="flex flex-col items-center justify-center gap-3">
-            <LinkIcon className="size-8 text-secondary-400" />
-
-            <Typography size="xs" tag="p" className="text-secondary-foreground">
-              Ainda não existem links cadastrados
-            </Typography>
-          </div>
+      <div className={cn("border-t border-secondary", !data?.items?.length && "pt-8 pb-6")}>
+        {isLoading || isFetching ? (
+          <LoadingList />
+        ) : !data?.items?.length ? (
+          <EmptyList />
         ) : (
-          <div />
+          <div className="">
+            {data.items.map((item) => (
+              <ListLinkItem key={item.id} item={item} />
+            ))}
+          </div>
         )}
       </div>
     </Card>

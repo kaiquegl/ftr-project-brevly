@@ -5,7 +5,7 @@ import { linkItemSchema } from "@/app/functions/get-links";
 import { linkFormSchema, postLink } from "@/app/functions/post-link";
 import { isLeft, unwrapEither } from "@/utils/either";
 
-export const postLinkRoute: FastifyPluginAsyncZod = async server => {
+export const postLinkRoute: FastifyPluginAsyncZod = async (server) => {
   server.post(
     "/links",
     {
@@ -14,7 +14,7 @@ export const postLinkRoute: FastifyPluginAsyncZod = async server => {
         summary: "Create a new short link",
         body: linkFormSchema,
         response: {
-          201: z.object({ link: linkItemSchema.describe("Created link successfully") }),
+          201: z.object({ item: linkItemSchema.describe("Created link successfully") }),
           400: z.object({ error: z.string().describe("Error creating link") }),
         },
       },
@@ -30,7 +30,7 @@ export const postLinkRoute: FastifyPluginAsyncZod = async server => {
       }
 
       const { link } = unwrapEither(result);
-      return reply.status(201).send({ link });
+      return reply.status(201).send({ item: link });
     }
   );
 };

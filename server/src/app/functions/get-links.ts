@@ -15,7 +15,7 @@ export const linkItemSchema = z.object({
 export type LinkItem = z.infer<typeof linkItemSchema>;
 
 export const getLinksSchema = z.object({
-  links: z.array(linkItemSchema),
+  items: z.array(linkItemSchema),
 });
 
 export type GetLinksResponse = z.infer<typeof getLinksSchema>;
@@ -32,5 +32,5 @@ export async function getLinks(): Promise<GetLinksResponse> {
     .from(schema.links)
     .orderBy(desc(schema.links.id));
 
-  return { links };
+  return { items: links };
 }

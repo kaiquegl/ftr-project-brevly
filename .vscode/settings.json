@@ -37,8 +37,5 @@
     "source.organizeImports.biome": "explicit"
   },
   "editor.formatOnSave": true,
-  "cSpell.words": [
-    "brev",
-    "brevly"
-  ]
+  "cSpell.words": ["brev", "brevly", "VITE"]
 }

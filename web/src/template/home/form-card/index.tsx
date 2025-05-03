@@ -1,14 +1,24 @@
 import Card from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
 import { useAppForm } from "@/hooks/form";
+import postLink from "@/services/links/post";
 import { defaultLinkFormValues, linkFormSchema } from "@/services/links/schemas/form";
+import { toast } from "sonner";
 
 export default function FormCard() {
+  const { mutateAsync } = postLink();
+
   const form = useAppForm({
     defaultValues: defaultLinkFormValues,
     validators: { onChange: linkFormSchema },
-    onSubmit: ({ value }) => {
-      console.log("submit", value);
+    onSubmit: async ({ value }) => {
+      const response = await mutateAsync(value);
+
+      if (response.item) {
+        form.reset(defaultLinkFormValues);
+
+        toast.success("Link cadastrado com sucesso");
+      }
     },
   });
 
@@ -31,8 +41,8 @@ export default function FormCard() {
         />
 
         <form.AppField
-          name="shortenedLink"
-          children={(field) => <field.InputField label="Link encurtado" placeholder="brev.ly/" />}
+          name="shortLink"
+          children={(field) => <field.InputField label="Link encurtado" prefix={`${location.host}/`} />}
         />
 
         <div className="mt-6">

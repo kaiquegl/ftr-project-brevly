@@ -2,7 +2,7 @@ import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 
 import { getLinks, getLinksSchema } from "@/app/functions/get-links";
 
-export const getLinksRoutes: FastifyPluginAsyncZod = async server => {
+export const getLinksRoutes: FastifyPluginAsyncZod = async (server) => {
   server.get(
     "/links",
     {
@@ -15,8 +15,8 @@ export const getLinksRoutes: FastifyPluginAsyncZod = async server => {
       },
     },
     async (_, reply) => {
-      const { links } = await getLinks();
-      return reply.status(200).send({ links });
+      const { items } = await getLinks();
+      return reply.status(200).send({ items });
     }
   );
 };
