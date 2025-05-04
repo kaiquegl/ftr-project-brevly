@@ -24,7 +24,13 @@ export default function ListCard() {
         </Button>
       </div>
 
-      <div className={cn("border-t border-secondary", !data?.items?.length && "pt-8 pb-6")}>
+      <div
+        className={cn(
+          "border-t border-secondary max-h-112.5 scrollbar scrollbar-thumb-primary scrollbar-track-secondary overflow-y-auto",
+          (!data?.items?.length || isLoading || isFetching) && "pt-8 pb-6",
+          !!data?.items && data?.items?.length > 6 && "pr-2"
+        )}
+      >
         {isLoading || isFetching ? (
           <LoadingList />
         ) : !data?.items?.length ? (

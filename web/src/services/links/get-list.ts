@@ -1,8 +1,8 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 import { env } from "@/env";
 import type { LinkListResponse } from "@/services/links/schemas/list";
-import { toast } from "sonner";
 
 export default function getLinkList() {
   return useQuery<LinkListResponse>({

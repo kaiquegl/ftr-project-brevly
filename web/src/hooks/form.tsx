@@ -16,7 +16,7 @@ function SubscribeButton({ label }: { label: string }) {
   ]);
 
   return (
-    <Button type="submit" disabled={isSubmitting || !canSubmit || !isDirty}>
+    <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting || !canSubmit || !isDirty}>
       {label}
     </Button>
   );

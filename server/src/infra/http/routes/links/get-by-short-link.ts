@@ -17,7 +17,7 @@ export const getLinkByShortLinkRoute: FastifyPluginAsyncZod = async (server) => 
         summary: "Get link data by short link",
         response: {
           200: z.object({ item: linkItemSchema }),
-          400: z.object({ error: z.string().describe("Error getting link by id") }),
+          404: z.object({ error: z.string().describe("Error getting link by id") }),
         },
       },
     },
@@ -28,7 +28,7 @@ export const getLinkByShortLinkRoute: FastifyPluginAsyncZod = async (server) => 
 
       if (isLeft(result)) {
         const error = unwrapEither(result);
-        return reply.status(400).send({ error: error.message });
+        return reply.status(404).send({ error: error.message });
       }
 
       const { link } = unwrapEither(result);

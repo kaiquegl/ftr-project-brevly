@@ -17,7 +17,7 @@ export const deleteLinkRoute: FastifyPluginAsyncZod = async (server) => {
         }),
         response: {
           200: z.object({ item: linkItemSchema.describe("Deleted link successfully") }),
-          400: z.object({ error: z.string().describe("Error deleting link") }),
+          404: z.object({ error: z.string().describe("Error deleting link") }),
         },
       },
     },
@@ -28,7 +28,7 @@ export const deleteLinkRoute: FastifyPluginAsyncZod = async (server) => {
 
       if (isLeft(result)) {
         const error = unwrapEither(result);
-        return reply.status(400).send({ error: error.message });
+        return reply.status(404).send({ error: error.message });
       }
 
       const { link } = unwrapEither(result);
