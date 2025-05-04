@@ -2,9 +2,16 @@ import { fastifyCors } from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
 import { fastify } from "fastify";
-import { hasZodFastifySchemaValidationErrors, serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
+import {
+  hasZodFastifySchemaValidationErrors,
+  jsonSchemaTransform,
+  serializerCompiler,
+  validatorCompiler,
+} from "fastify-type-provider-zod";
 
-import { getLinksRoutes } from "@/infra/http/routes/links/get";
+import { deleteLinkRoute } from "@/infra/http/routes/links/delete";
+import { getLinksRoute } from "@/infra/http/routes/links/get";
+import { getLinkByShortLinkRoute } from "@/infra/http/routes/links/get-by-short-link";
 import { postLinkRoute } from "@/infra/http/routes/links/post";
 
 const server = fastify();
@@ -35,6 +42,7 @@ server.register(fastifySwagger, {
       version: "1.0.0",
     },
   },
+  transform: jsonSchemaTransform,
 });
 
 server.register(fastifySwaggerUi, {
@@ -42,8 +50,10 @@ server.register(fastifySwaggerUi, {
 });
 
 // links
-server.register(getLinksRoutes);
+server.register(getLinksRoute);
+server.register(getLinkByShortLinkRoute);
 server.register(postLinkRoute);
+server.register(deleteLinkRoute);
 
 server.listen({ port: 3333, host: "0.0.0.0" }, () => {
   console.log("HTTP Server Running at port 3333");
