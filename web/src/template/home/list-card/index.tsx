@@ -3,6 +3,7 @@ import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
+import exportLinks from "@/services/links/export";
 import getLinkList from "@/services/links/get-list";
 import EmptyList from "./list/empty";
 import ListLinkItem from "./list/item";
@@ -10,6 +11,21 @@ import LoadingList from "./list/loading";
 
 export default function ListCard() {
   const { data, isLoading, isFetching } = getLinkList();
+  const exportLinksMutation = exportLinks();
+
+  const handleExportLinks = async () => {
+    const { reportUrl } = await exportLinksMutation.mutateAsync();
+
+    if (reportUrl) {
+      const a = document.createElement("a");
+
+      a.setAttribute("href", reportUrl);
+      a.setAttribute("download", "links.csv");
+      a.click();
+
+      window.URL.revokeObjectURL(reportUrl);
+    }
+  };
 
   return (
     <Card className="flex flex-col gap-4 lg:gap-5">
@@ -18,7 +34,13 @@ export default function ListCard() {
           Meus links
         </Typography>
 
-        <Button variant="secondary" size="sm">
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={handleExportLinks}
+          isLoading={exportLinksMutation.isPending}
+          disabled={exportLinksMutation.isPending || data?.items.length === 0 || !data}
+        >
           <DownloadIcon className="size-4 text-foreground" />
           Baixar CSV
         </Button>
